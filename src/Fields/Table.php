@@ -120,6 +120,15 @@ class Table extends Field
     }
 
     /**
+     * @param R\Rule $rule
+     * @return static
+     */
+    public function map(R\Rule $rule): static
+    {
+        return $this->addRule(R\ArrayMap::create($rule));
+    }
+
+    /**
      * @param Form $form
      * @return static
      */
