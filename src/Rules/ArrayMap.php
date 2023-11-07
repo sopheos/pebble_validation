@@ -32,9 +32,13 @@ class ArrayMap extends Rule
     {
         $this->value = $value;
 
+        if (!is_array($value)) {
+            return false;
+        }
+
         $isValid = true;
 
-        foreach ($value as $v) {
+        foreach ($this->value as &$v) {
             if (!$this->rule->validate($v)) {
                 $isValid = false;
             }
