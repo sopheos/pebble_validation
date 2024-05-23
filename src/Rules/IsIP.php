@@ -4,7 +4,7 @@ namespace Pebble\Validation\Rules;
 
 class IsIP extends Rule
 {
-    public function __construct($flags = null)
+    public function __construct($flags = 0)
     {
         $this->name = 'is_ip';
         $this->properties['flags'] = $flags;
@@ -13,7 +13,7 @@ class IsIP extends Rule
     /**
      * @return static
      */
-    public static function create($flags = null): static
+    public static function create($flags = 0): static
     {
         return new static($flags);
     }
