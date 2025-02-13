@@ -92,7 +92,7 @@ class Table extends Field
     /**
      * @return static
      */
-    public function TYPE_TIMESTAMP(): static
+    public function timestamp(): static
     {
         $this->type = self::TYPE_TIMESTAMP;
         return $this;
