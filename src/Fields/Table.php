@@ -2,6 +2,7 @@
 
 namespace Pebble\Validation\Fields;
 
+use Exception;
 use Pebble\Validation\Form;
 use Pebble\Validation\Rules as R;
 use Pebble\Validation\Rules\Children;
@@ -13,10 +14,11 @@ use Pebble\Validation\Rules\Children;
  */
 class Table extends Field
 {
-    const TYPE_INTEGER = 1;
-    const TYPE_NUMBER = 2;
-    const TYPE_TEXT = 3;
-    const TYPE_TEXTAREA = 4;
+    const TYPE_INTEGER   = 1;
+    const TYPE_NUMBER    = 2;
+    const TYPE_TEXT      = 3;
+    const TYPE_TEXTAREA  = 4;
+    const TYPE_TIMESTAMP = 5;
 
     protected $prepare = 'default';
     private int $type = 0;
@@ -84,6 +86,15 @@ class Table extends Field
     public function textarea(): static
     {
         $this->type = self::TYPE_TEXTAREA;
+        return $this;
+    }
+
+    /**
+     * @return static
+     */
+    public function TYPE_TIMESTAMP(): static
+    {
+        $this->type = self::TYPE_TIMESTAMP;
         return $this;
     }
 
@@ -177,6 +188,8 @@ class Table extends Field
                 return $this->parseNumber($value);
             case self::TYPE_TEXTAREA:
                 return $this->parseTextarea($value);
+            case self::TYPE_TIMESTAMP:
+                return $this->parseTimestamp($value);
             default:
                 return $this->parseAuto($value);
         }
@@ -186,7 +199,7 @@ class Table extends Field
      * @param array $input
      * @return array
      */
-    private function parseInteger($input)
+    private function parseInteger(array $input): array
     {
         $output = [];
 
@@ -199,6 +212,31 @@ class Table extends Field
                 $output[$key] = $this->parseInteger($value);
             } else {
                 $this->error = $this->prepare;
+            }
+        }
+
+        return $output;
+    }
+
+    /**
+     * @param array $input
+     * @return array
+     */
+    private function parseTimestamp(array $input): array
+    {
+        $output = [];
+
+        foreach ($input as $key => $value) {
+            if (is_array($value)) {
+                $output[$key] = $this->parseTimestamp($value);
+            } else {
+                try {
+                    if (($value = Timestamp::sanitize($value))) {
+                        $output[$key] = $value;
+                    }
+                } catch (Exception) {
+                    $this->error = $this->prepare;
+                }
             }
         }
 
@@ -232,7 +270,7 @@ class Table extends Field
      * @param array $input
      * @return array
      */
-    private function parseText($input)
+    private function parseText(array $input): array
     {
         $output = [];
 
@@ -261,7 +299,7 @@ class Table extends Field
      * @param array $input
      * @return array
      */
-    private function parseTextarea($input)
+    private function parseTextarea(array $input): array
     {
         $output = [];
 
@@ -286,7 +324,7 @@ class Table extends Field
         return $output;
     }
 
-    private function parseAuto(mixed $input): mixed
+    private function parseAuto(array $input): array
     {
         $output = [];
 

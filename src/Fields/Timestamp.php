@@ -2,6 +2,8 @@
 
 namespace Pebble\Validation\Fields;
 
+use Exception;
+
 /**
  * Timestamp
  *
@@ -16,6 +18,17 @@ class Timestamp extends Integer
      * @return string
      */
     protected function prepare(mixed $value): mixed
+    {
+        try {
+            return self::sanitize($value);
+        } catch (Exception) {
+            $this->error = $this->prepare;
+        }
+
+        return null;
+    }
+
+    public static function sanitize(mixed $value): mixed
     {
         if ($value === null) {
             return null;
@@ -37,9 +50,7 @@ class Timestamp extends Integer
             return strtotime($value);
         }
 
-        $this->error = $this->prepare;
-
-        return null;
+        throw new Exception();
     }
 
     // -------------------------------------------------------------------------
