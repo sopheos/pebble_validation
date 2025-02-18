@@ -111,7 +111,7 @@ class Field implements FieldInterface
      * @param string $name
      * @return static
      */
-    public function fakeRule(int $name): static
+    public function fakeRule(string $name): static
     {
         return $this->addRule(FakeRule::create($name));
     }
