@@ -33,6 +33,7 @@ class Children extends Rule
     public function validate(mixed $value): bool
     {
         $this->errors = [];
+        $this->value  = [];
 
         if (!is_array($value)) {
             return false;

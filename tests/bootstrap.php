@@ -14,3 +14,20 @@ require __DIR__ . '/../vendor/autoload.php';
 foreach (glob(__DIR__ . '/ressources/*.php') as $file) {
     require $file;
 }
+
+function debug(...$vars)
+{
+    if (!$vars) {
+        echo PHP_EOL;
+    }
+
+    foreach ($vars as $var) {
+        if ($var === null) {
+            $var = 'null';
+        }
+        if (is_bool($var)) {
+            $var = $var ? 'true' : 'false';
+        }
+        echo print_r($var, true) . PHP_EOL;
+    }
+}

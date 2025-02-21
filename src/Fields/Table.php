@@ -22,13 +22,15 @@ class Table extends Field
 
     protected $prepare = 'default';
     private int $type = 0;
+
+    private ?Form $form = null;
     private ?Children $children = null;
 
     // -------------------------------------------------------------------------
 
     /**
      * @param mixed $value
-     * @return string
+     * @return array
      */
     protected function prepare(mixed $value): mixed
     {
@@ -145,9 +147,20 @@ class Table extends Field
      */
     public function children(Form $form): static
     {
-        if ($this->children === null) {
+        if ($this->form === null) {
+            $this->form = $form;
             $this->children = R\Children::create($form);
             $this->addRule($this->children);
+        }
+
+        return $this;
+    }
+
+    public function child(Form $form): static
+    {
+        if ($this->form === null) {
+            $this->form = $form;
+            $this->addRule(R\Child::create($form));
         }
 
         return $this;
@@ -175,7 +188,7 @@ class Table extends Field
      */
     private function parse(array $value): array
     {
-        if (!$value || $this->children) {
+        if (!$value || $this->form) {
             return $value;
         }
 
