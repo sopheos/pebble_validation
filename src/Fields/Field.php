@@ -5,6 +5,7 @@ namespace Pebble\Validation\Fields;
 use Pebble\Validation\FieldInterface;
 use Pebble\Validation\FormInterface;
 use Pebble\Validation\RuleInterface;
+use Pebble\Validation\Rules\CallableRule;
 use Pebble\Validation\Rules\FakeRule;
 
 class Field implements FieldInterface
@@ -114,6 +115,15 @@ class Field implements FieldInterface
     public function fakeRule(string $name): static
     {
         return $this->addRule(FakeRule::create($name));
+    }
+
+    /**
+     * @param string $name
+     * @return static
+     */
+    public function custom(string $name, callable $callable, ...$params): static
+    {
+        return $this->addRule(CallableRule::create($name, $callable, $params));
     }
 
     /**
