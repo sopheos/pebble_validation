@@ -14,14 +14,16 @@ use Pebble\Validation\Rules\Children;
  */
 class Table extends Field
 {
+    const TYPE_NONE      = 0;
     const TYPE_INTEGER   = 1;
     const TYPE_NUMBER    = 2;
     const TYPE_TEXT      = 3;
     const TYPE_TEXTAREA  = 4;
     const TYPE_TIMESTAMP = 5;
+    const TYPE_AUTO      = 6;
 
     protected $prepare = 'default';
-    private int $type = 0;
+    private int $type = self::TYPE_AUTO;
 
     private ?Form $form = null;
     private ?Children $children = null;
@@ -54,6 +56,15 @@ class Table extends Field
     // -------------------------------------------------------------------------
     // Config
     // -------------------------------------------------------------------------
+
+    /**
+     * @return static
+     */
+    public function none(): static
+    {
+        $this->type = self::TYPE_NONE;
+        return $this;
+    }
 
     /**
      * @return static
@@ -153,7 +164,7 @@ class Table extends Field
             $this->addRule($this->children);
         }
 
-        return $this;
+        return $this->none();
     }
 
     public function child(Form $form): static
@@ -163,7 +174,7 @@ class Table extends Field
             $this->addRule(R\Child::create($form));
         }
 
-        return $this;
+        return $this->none();
     }
 
     /**
@@ -188,24 +199,19 @@ class Table extends Field
      */
     private function parse(array $value): array
     {
-        if (!$value || $this->form) {
+        if (!$value) {
             return $value;
         }
 
-        switch ($this->type) {
-            case self::TYPE_INTEGER:
-                return $this->parseInteger($value);
-            case self::TYPE_TEXT:
-                return $this->parseText($value);
-            case self::TYPE_NUMBER:
-                return $this->parseNumber($value);
-            case self::TYPE_TEXTAREA:
-                return $this->parseTextarea($value);
-            case self::TYPE_TIMESTAMP:
-                return $this->parseTimestamp($value);
-            default:
-                return $this->parseAuto($value);
-        }
+        return match ($this->type) {
+            self::TYPE_NONE      => $value,
+            self::TYPE_INTEGER   => $this->parseInteger($value),
+            self::TYPE_TEXT      => $this->parseText($value),
+            self::TYPE_NUMBER    => $this->parseNumber($value),
+            self::TYPE_TEXTAREA  => $this->parseTextarea($value),
+            self::TYPE_TIMESTAMP => $this->parseTimestamp($value),
+            default              => $this->parseAuto($value)
+        };
     }
 
     /**
