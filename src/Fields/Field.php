@@ -123,7 +123,7 @@ class Field implements FieldInterface
      */
     public function custom(string $name, callable $callable, ...$params): static
     {
-        return $this->addRule(CallableRule::create($name, $callable, $params));
+        return $this->addRule(CallableRule::create($name, $callable, ...$params));
     }
 
     /**
