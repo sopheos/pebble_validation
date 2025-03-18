@@ -2,6 +2,8 @@
 
 namespace Pebble\Validation\Rules;
 
+use Pebble\Validation\Helper;
+
 class ImageMinSize extends Rule
 {
     /**
@@ -36,11 +38,10 @@ class ImageMinSize extends Rule
     {
         $this->value = $value;
 
-        if (!($size = getimagesize($value['tmp_name']))) {
+        if (! ($size = Helper::getImageSize($value['tmp_name']))) {
             return false;
         }
 
-        $size = [$size[0], $size[1]];
         $limit = [$this->properties['width'], $this->properties['height']];
 
         if ($this->properties['ignoreOrientation']) {
