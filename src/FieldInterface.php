@@ -82,6 +82,11 @@ interface FieldInterface
     public function error(): string;
 
     /**
+     * @return string
+     */
+    public function message(): string;
+
+    /**
      * @return boolean
      */
     public function isValid(): bool;
