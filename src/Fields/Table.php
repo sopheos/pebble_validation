@@ -5,6 +5,7 @@ namespace Pebble\Validation\Fields;
 use Exception;
 use Pebble\Validation\Form;
 use Pebble\Validation\Rules as R;
+use Pebble\Validation\Rules\CallableRule;
 use Pebble\Validation\Rules\Children;
 
 /**
@@ -187,6 +188,15 @@ class Table extends Field
         }
 
         return $this->children->errors();
+    }
+
+    /**
+     * @param string $name
+     * @return static
+     */
+    public function custom(string $name, callable $callable, ...$params): static
+    {
+        return $this->map(CallableRule::create($name, $callable, ...$params));
     }
 
     // -------------------------------------------------------------------------
