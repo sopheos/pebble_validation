@@ -50,8 +50,6 @@ class Field implements FieldInterface
      */
     protected $error = '';
 
-    protected array $messages = [];
-
     // -------------------------------------------------------------------------
 
     /**
@@ -215,19 +213,6 @@ class Field implements FieldInterface
 
     // -------------------------------------------------------------------------
 
-    public function setMessages(array $messages): static
-    {
-        $this->messages = $messages;
-        return $this;
-    }
-
-    public function setMessage(string $rule, string $message): static
-    {
-
-        $this->messages[$rule] = $message;
-        return $this;
-    }
-
     /**
      * @param mixed $value
      * @return static
@@ -278,17 +263,6 @@ class Field implements FieldInterface
     public function error(): string
     {
         return $this->error;
-    }
-
-    public function message(): string
-    {
-        if (! $this->error) {
-            return '';
-        }
-
-        return $this->messages[$this->error]
-            ?? $this->messages['default']
-            ?? $this->error;
     }
 
     /**
