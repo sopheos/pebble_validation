@@ -141,6 +141,21 @@ class Form implements FormInterface
         return $errors;
     }
 
+    /**
+     * @return array
+     */
+    public function messages(): array
+    {
+        $messages = [];
+        foreach ($this->fields as $field) {
+            if (!$field->isValid()) {
+                $messages[$field->name()] = $field->message();
+            }
+        }
+
+        return $messages;
+    }
+
     // -------------------------------------------------------------------------
 
     /**
@@ -168,6 +183,15 @@ class Form implements FormInterface
     public function error(string $field)
     {
         return $this->field($field)->error();
+    }
+
+    /**
+     * @param string $field
+     * @return mixed
+     */
+    public function message(string $field)
+    {
+        return $this->field($field)->message();
     }
 
     // -------------------------------------------------------------------------

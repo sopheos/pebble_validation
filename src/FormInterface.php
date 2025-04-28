@@ -54,6 +54,11 @@ interface FormInterface
     public function errors(): array;
 
     /**
+     * @return array
+     */
+    public function messages(): array;
+
+    /**
      * @param string $field
      * @return mixed
      */
@@ -70,4 +75,10 @@ interface FormInterface
      * @return mixed
      */
     public function error(string $field);
+
+    /**
+     * @param string $field
+     * @return mixed
+     */
+    public function message(string $field);
 }

@@ -62,6 +62,19 @@ interface FieldInterface
     public function setError(string $error): static;
 
     /**
+     * @param string $rule
+     * @param string|null $message
+     * @return static
+     */
+    public function setMessage(string $rule, ?string $message = null): static;
+
+    /**
+     * @param string $message
+     * @return static
+     */
+    public function setDefaultMessage(string $message): static;
+
+    /**
      * @return string
      */
     public function name(): string;
@@ -80,6 +93,11 @@ interface FieldInterface
      * @return string
      */
     public function error(): string;
+
+    /**
+     * @return string
+     */
+    public function message(): string;
 
     /**
      * @return boolean

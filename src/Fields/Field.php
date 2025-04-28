@@ -50,6 +50,16 @@ class Field implements FieldInterface
      */
     protected $error = '';
 
+    /**
+     * @var array
+     */
+    protected $messages = [];
+
+    /**
+     * @var string
+     */
+    protected $default_message = 'default';
+
     // -------------------------------------------------------------------------
 
     /**
@@ -141,6 +151,28 @@ class Field implements FieldInterface
     public function addTo(FormInterface $form): static
     {
         $form->addField($this);
+        return $this;
+    }
+
+    /**
+     * @param string $rule
+     * @param string|null$message
+     * @return static
+     */
+    public function setMessage(string $rule, ?string $message = null): static
+    {
+        $this->messages[$rule] = $message ?? $rule;
+
+        return $this;
+    }
+
+    /**
+     * @param string $message
+     * @return static
+     */
+    public function setDefaultMessage(string $message): static
+    {
+        $this->default_message = $message;
         return $this;
     }
 
@@ -263,6 +295,18 @@ class Field implements FieldInterface
     public function error(): string
     {
         return $this->error;
+    }
+
+    /**
+     * @return string
+     */
+    public function message(): string
+    {
+        if ($this->isValid()) {
+            return '';
+        }
+
+        return $this->messages[$this->error] ?? $this->default_message;
     }
 
     /**
