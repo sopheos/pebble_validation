@@ -191,6 +191,18 @@ class Table extends Field
     }
 
     /**
+     * @return array
+     */
+    public function childrenMessages(): array
+    {
+        if ($this->children === null) {
+            return [];
+        }
+
+        return $this->children->messages();
+    }
+
+    /**
      * @param string $name
      * @return static
      */

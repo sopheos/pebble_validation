@@ -7,6 +7,7 @@ use Pebble\Validation\Form;
 class Children extends Rule
 {
     private array $errors = [];
+    private array $messages = [];
 
     /**
      * @param Form $form
@@ -33,6 +34,7 @@ class Children extends Rule
     public function validate(mixed $value): bool
     {
         $this->errors = [];
+        $this->messages = [];
         $this->value  = [];
 
         if (!is_array($value)) {
@@ -64,6 +66,7 @@ class Children extends Rule
             } else {
                 $isValid = false;
                 $this->errors[$i] = $form->errors();
+                $this->messages[$i] = $form->messages();
             }
         }
 
@@ -73,5 +76,10 @@ class Children extends Rule
     public function errors(): array
     {
         return $this->errors;
+    }
+
+    public function messages(): array
+    {
+        return $this->messages;
     }
 }
