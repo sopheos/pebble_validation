@@ -206,7 +206,7 @@ class Table extends Field
      * @param string $name
      * @return static
      */
-    public function custom(string $name, callable $callable, ...$params): static
+    public function customMap(string $name, callable $callable, ...$params): static
     {
         return $this->map(CallableRule::create($name, $callable, ...$params));
     }
