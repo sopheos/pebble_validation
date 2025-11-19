@@ -164,7 +164,7 @@ class Form implements FormInterface
      */
     public function input(string $field)
     {
-        return $this->field($field)->input();
+        return $this->field($field)?->input();
     }
 
     /**
@@ -173,7 +173,7 @@ class Form implements FormInterface
      */
     public function value(string $field)
     {
-        return $this->field($field)->value();
+        return $this->field($field)?->value();
     }
 
     /**
@@ -182,7 +182,7 @@ class Form implements FormInterface
      */
     public function error(string $field)
     {
-        return $this->field($field)->error();
+        return $this->field($field)?->error();
     }
 
     /**
@@ -191,7 +191,7 @@ class Form implements FormInterface
      */
     public function message(string $field)
     {
-        return $this->field($field)->message();
+        return $this->field($field)?->message();
     }
 
     // -------------------------------------------------------------------------
