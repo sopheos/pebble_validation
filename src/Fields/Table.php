@@ -154,6 +154,22 @@ class Table extends Field
     }
 
     /**
+     * @param array $items
+     */
+    public function includes(array $items): static
+    {
+        return $this->map(R\Includes::create($items));
+    }
+
+    /**
+     * @param array $items
+     */
+    public function excludes(array $items): static
+    {
+        return $this->map(R\Excludes::create($items));
+    }
+
+    /**
      * @param Form $form
      * @return static
      */
